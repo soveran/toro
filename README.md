@@ -134,7 +134,7 @@ with the `status` macro:
 ```
 
 When a request method matcher succeeds, the status code for the
-request is changed to `202`.
+request is changed to `200`.
 
 
 ## Installation
