@@ -1,0 +1,15 @@
+name: toro
+version: 0.1.0
+
+authors:
+  - Michel Martens <mail@soveran.com>
+
+license: MIT
+
+dependencies:
+  seg:
+    github: soveran/seg-crystal
+
+development_dependencies:
+  crotest:
+    github: emancu/crotest
