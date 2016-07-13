@@ -1,5 +1,7 @@
 # Toro
 
+![Toro](http://files.soveran.com/toro/img/toro.png)
+
 Tree Oriented Routing
 
 ## Usage
