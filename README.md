@@ -141,6 +141,47 @@ with the `status` macro:
 When a request method matcher succeeds, the status code for the
 request is changed to `200`.
 
+Basic Auth
+----------
+
+The `basic_auth` method checks the `Authentication` header and, if
+present, yields to the block the values for username and password.
+
+Here's an example of how you can use it:
+
+```crystal
+class A < Toro::Router
+  def users(user : User)
+    get do
+      text "Hello #{user.name}"
+    end
+  end
+
+  def users(user : Nil)
+    get do
+      text "Hello guest!"
+    end
+  end
+
+  def routes
+    user = basic_auth do |name, pass|
+      User.authenticate(name, pass)
+    end
+    
+    users(user)
+  end
+end
+```
+
+The example overloads the `users` method so that it can deal both
+with instances of `User` and with `nil`. The flow of your router
+will naturally continue in one of those methods. You are free to
+define any other methods like `users` in order to split the logic
+of your application.
+
+To illustrate the `basic_auth` feature we user an imaginary `User`
+class that responds to the `authenticate` method and returns either
+an instance of `User` or nil.
 
 ## Installation
 
