@@ -32,9 +32,9 @@ end
 ```
 
 The routes are evaluated in a sandbox where the following methods
-are available: `context`, `path`, `inbox`, `run`, `halt`, `root`,
-`root?`, `default`, `on`, `get`, `put`, `head`, `post`, `patch`,
-`delete`, `options`, `text`, `html` and `render`.
+are available: `context`, `path`, `inbox`, `run`, `halt`, `basic_auth`,
+`root`, `root?`, `default`, `on`, `get`, `put`, `head`, `post`,
+`patch`, `delete`, `options`, `text`, `html` and `render`.
 
 ## API
 
@@ -48,6 +48,9 @@ to the request.
 `run`: Runs a sub app.
 
 `halt`: Terminates the request.
+
+`basic_auth`: Yields a username and password from the Authorization
+header, and returns whatever the block returns or nil.
 
 `root?`: Returns true if the path yet to be consumed is empty.
 
