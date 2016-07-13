@@ -170,7 +170,7 @@ module Toro
 
     macro redirect(url)
       status 302
-      header "Location", "/dashboard"
+      header "Location", url
     end
   end
 end
