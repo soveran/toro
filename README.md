@@ -235,7 +235,7 @@ will naturally continue in one of those methods. You are free to
 define any other methods like `users` in order to split the logic
 of your application.
 
-To illustrate the `basic_auth` feature we user an imaginary `User`
+To illustrate the `basic_auth` feature we used an imaginary `User`
 class that responds to the `authenticate` method and returns either
 an instance of `User` or nil.
 
