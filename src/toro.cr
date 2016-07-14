@@ -193,7 +193,7 @@ module Toro
 
     macro redirect(url)
       status 302
-      header "Location", url
+      header "Location", {{url}}
     end
   end
 end

@@ -78,6 +78,8 @@ class App < Toro::Router
     end
   end
 end
+
+App.run
 ```
 
 The routes are evaluated in a sandbox where the following methods
