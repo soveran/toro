@@ -320,3 +320,25 @@ describe "halt" do
     assert_equal "here\n", response.body
   end
 end
+
+
+class L < Toro::Router
+  def routes
+    post do
+      test = {"hello" => "world"}
+      json test
+    end
+  end
+end
+
+describe "json method helper" do
+  response = Toro.drive(L, "POST", "/")
+
+  it "should return json content-type" do
+    assert_equal "application/json", response.headers["Content-Type"]
+  end
+
+  it "should return json {\"hello\":\"world\"}" do
+    assert_equal "{\"hello\":\"world\"}\n", response.body
+  end
+end
