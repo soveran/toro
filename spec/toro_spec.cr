@@ -321,6 +321,7 @@ describe "halt" do
   end
 end
 
+require "json"
 
 class L < Toro::Router
   def routes
