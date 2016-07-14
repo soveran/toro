@@ -207,11 +207,6 @@ class H < Toro::Router
 
       html "spec/views/index"
     end
-
-    post do
-      status 302
-      header "Location", "/dashboard"
-    end
   end
 end
 
@@ -228,12 +223,6 @@ describe "html renderer" do
 
     assert_equal 404, response.status_code
     assert_equal "", response.body
-  end
-
-  it "redirect" do
-    response = Toro.drive(H, "POST", "/")
-
-    assert_equal 302, response.status_code
   end
 end
 
