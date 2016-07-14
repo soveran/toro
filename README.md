@@ -74,7 +74,7 @@ class App < Toro::Router
     # `Toro::Router`. This illustrates how you can compose your applications
     # and split the logic among different routers.
     default do
-      run Guests
+      mount Guests
     end
   end
 end
@@ -83,9 +83,9 @@ App.run
 ```
 
 The routes are evaluated in a sandbox where the following methods
-are available: `context`, `path`, `inbox`, `run`, `halt`, `basic_auth`,
-`root`, `root?`, `default`, `on`, `get`, `put`, `head`, `post`,
-`patch`, `delete`, `options`, `text`, `html` and `render`.
+are available: `context`, `path`, `inbox`, `mount`, `halt`,
+`basic_auth`, `root`, `root?`, `default`, `on`, `get`, `put`, `head`,
+`post`, `patch`, `delete`, `options`, `text`, `html` and `render`.
 
 ## API
 
@@ -96,7 +96,7 @@ are available: `context`, `path`, `inbox`, `run`, `halt`, `basic_auth`,
 `inbox`: Hash with captures and potentially other variables local
 to the request.
 
-`run`: Runs a sub app.
+`mount`: Mounts a sub app.
 
 `halt`: Terminates the request.
 
