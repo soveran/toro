@@ -145,7 +145,7 @@ class F < Toro::Router
     end
 
     on "bar" do
-      run E
+      mount E
     end
 
     default do
@@ -290,5 +290,33 @@ describe "basic auth" do
     response = Toro.drive(J).call(request)
 
     assert_equal "user:1\n", response.body
+  end
+end
+
+class K < Toro::Router
+  getter counter = 0
+
+  def incr
+    @counter += 1
+  end
+
+  def routes
+    on incr == 1 do
+      text "here"
+    end
+
+    on incr == 2 do
+      text "not here"
+    end
+
+    text "counter: #{counter}"
+  end
+end
+
+describe "halt" do
+  response = Toro.drive(K, "GET", "/foo/bar")
+
+  it "should stop the execution once a matcher succeeds" do
+    assert_equal "here\n", response.body
   end
 end

@@ -23,9 +23,6 @@ require "http/server"
 
 module Toro
   abstract class Router
-    class Halt < Exception
-    end
-
     def self.call(context : HTTP::Server::Context)
       new(context).call
     end
@@ -64,11 +61,6 @@ module Toro
     def call
       status 404
       routes
-    rescue Halt
-    end
-
-    def halt
-      raise Halt.new
     end
 
     def auth_header
@@ -88,51 +80,56 @@ module Toro
       end
     end
 
-    def default
-      yield
-      halt
+    macro default
+      {{yield}}
+      return
     end
 
-    def on(cond : Bool)
-      default { yield } if cond
+    def on?(cond : Bool)
+      cond
     end
 
-    def on(str : String)
-      on(path.consume(str)) { yield }
+    def on?(str : String)
+      path.consume(str)
     end
 
-    def on(sym : Symbol)
-      on(path.capture(sym, inbox)) { yield }
+    def on?(sym : Symbol)
+      path.capture(sym, inbox)
     end
 
     def root?
       path.root?
     end
 
-    def root
-      default { yield } if root?
-    end
-
     {% for method in %w(get put head post patch delete options) %}
+
       def {{method.id}}?
         context.request.method == {{method.upcase}}
       end
 
       def {{method.id}}
-        return unless {{method.id}}?
-
-        root do
-          status 200
-          yield
-        end
+        root { status 200; yield } if {{method.id}}?
       end
+
     {% end %}
 
-    def run(app)
-      app.call(context, path)
+    macro mount(app)
+      {{app.id}}.call(context, path)
+      return
     end
 
-    abstract def routes
+    macro default
+      {{yield}}
+      return
+    end
+
+    macro on(matcher)
+      default { {{yield}} } if on?({{matcher}})
+    end
+
+    macro root
+      default { {{yield}} } if root?
+    end
 
     macro status
       context.response.status_code
@@ -172,5 +169,7 @@ module Toro
       status 302
       header "Location", {{url}}
     end
+
+    abstract def routes
   end
 end
