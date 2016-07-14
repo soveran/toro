@@ -131,33 +131,33 @@ module Toro
       default { {{yield}} } if root?
     end
 
-    macro status
+    def status
       context.response.status_code
     end
 
-    macro status(code)
-      context.response.status_code = {{code}}
+    def status(code)
+      context.response.status_code = code
     end
 
-    macro header(name, value)
-      context.response.headers[{{name}}] = {{value}}
+    def header(name, value)
+      context.response.headers[name] = value
     end
 
-    macro content_type(type)
-      context.response.content_type = {{type}}
+    def content_type(type)
+      context.response.content_type = type
     end
 
-    macro write(str)
-      context.response.puts({{str}})
+    def write(str)
+      context.response.puts(str)
     end
 
     macro render(template)
       ECR.embed "#{ {{template}} }.ecr", context.response
     end
 
-    macro text(str)
+    def text(str)
       header "Content-Type", "text/plain"
-      write {{str}}
+      write str
     end
 
     macro html(template)
@@ -165,14 +165,14 @@ module Toro
       render {{template}}
     end
 
-    macro json(response)
+    def json(response)
       header "Content-Type", "application/json"
-      write {{response}}.to_json
+      response.to_json(context.response)
     end
 
-    macro redirect(url)
+    def redirect(url)
       status 302
-      header "Location", {{url}}
+      header "Location", url
     end
 
     abstract def routes

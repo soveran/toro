@@ -340,6 +340,6 @@ describe "json method helper" do
   end
 
   it "should return json {\"hello\":\"world\"}" do
-    assert_equal "{\"hello\":\"world\"}\n", response.body
+    assert_equal "{\"hello\":\"world\"}", response.body
   end
 end
