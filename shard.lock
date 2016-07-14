@@ -1,0 +1,10 @@
+version: 1.0
+shards:
+  crotest:
+    github: emancu/crotest
+    version: 0.1.2
+
+  seg:
+    github: soveran/seg-crystal
+    commit: 61d33f7086c8bd2bfb6b179b902409e7521afda3
+

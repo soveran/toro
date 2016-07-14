@@ -1,0 +1,11 @@
+name: seg
+version: 0.1.0
+
+authors:
+  - Michel Martens <mail@soveran.com>
+
+license: MIT
+
+development_dependencies:
+  crotest:
+    github: emancu/crotest

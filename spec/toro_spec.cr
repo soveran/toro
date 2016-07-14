@@ -292,3 +292,25 @@ describe "basic auth" do
     assert_equal "user:1\n", response.body
   end
 end
+
+
+class K < Toro::Router
+  def routes
+    post do
+      test = {"hello" => "world"}
+      json test
+    end
+  end
+end
+
+describe "json method helper" do
+  response = Toro.drive(K, "POST", "/")
+
+  it "should return json content-type" do
+    assert_equal "application/json", response.headers["Content-Type"]
+  end
+
+  it "should return json {\"hello\":\"world\"}" do
+    assert_equal "{\"hello\":\"world\"}\n", response.body
+  end
+end
