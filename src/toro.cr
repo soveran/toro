@@ -99,15 +99,21 @@ module Toro
     end
 
     def on(cond : Bool)
-      default { yield } if cond
+      if !@halt
+        default { yield } if cond
+      end
     end
 
     def on(str : String)
-      on(path.consume(str)) { yield }
+      if !@halt
+        on(path.consume(str)) { yield }
+      end
     end
 
     def on(sym : Symbol)
-      on(path.capture(sym, inbox)) { yield }
+      if !@halt
+        on(path.capture(sym, inbox)) { yield }
+      end
     end
 
     def root?
@@ -115,7 +121,9 @@ module Toro
     end
 
     def root
-      default { yield } if root?
+      if !@halt
+        default { yield } if root?
+      end
     end
 
     {% for method in %w(get put head post patch delete options) %}
@@ -138,6 +146,16 @@ module Toro
     end
 
     abstract def routes
+
+    def json(response : T, status_code : Int? = nil)
+      header "Content-Type", "application/json"
+      if status_code
+        status status_code
+      end
+
+      context.response.puts(response.to_json)
+
+    end
 
     macro status
       context.response.status_code
