@@ -83,9 +83,10 @@ App.run
 ```
 
 The routes are evaluated in a sandbox where the following methods
-are available: `context`, `path`, `inbox`, `mount`, `halt`,
-`basic_auth`, `root`, `root?`, `default`, `on`, `get`, `put`, `head`,
-`post`, `patch`, `delete`, `options`, `text`, `html` and `render`.
+are available: `context`, `path`, `inbox`, `mount`, `basic_auth`,
+`root`, `root?`, `default`, `on`, `get`, `put`, `head`, `post`,
+`patch`, `delete`, `options`, `text`, `html`, `json`, `write` and
+`render`.
 
 ## API
 
@@ -98,19 +99,17 @@ to the request.
 
 `mount`: Mounts a sub app.
 
-`halt`: Terminates the request.
-
 `basic_auth`: Yields a username and password from the Authorization
 header, and returns whatever the block returns or nil.
 
 `root?`: Returns true if the path yet to be consumed is empty.
 
+`root`: Receives a block and calls it only if `root?` is true.
+
 `default`: Receives a block that will be executed inconditionally.
 
 `on`: Receives a value to be matched, and a block that will be
 executed only if the request is matched.
-
-`root`: Receives a block and calls it only if `root?` is true.
 
 `get`: Receives a block and calls it only if `root?` and `get?` are
 true.
@@ -176,7 +175,8 @@ There's a `json` helper method expecting a Crystal generic Object.
 It will call the `to_json` serializer on the generic object. Please
 note that you need to require JSON from the standard library in
 order to use this helper (adding `require "json"` to your app should
-suffice).
+suffice). The lower level `write` macro writes a string to the
+response object. It is used internally by `text` and `json`.
 
 Status codes
 ------------
