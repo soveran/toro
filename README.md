@@ -171,9 +171,12 @@ The most basic way of returning a string is by calling the method
 the passed string to the response. A similar helper is called `html`:
 it takes as an argument the path to an `ECR` template and renders
 its content. A lower level `render` method is available: it also
-expects the path to a template, but it doesn't modify the headers. There's
-a json helper method expecting a Crystal generic Object and has an optional
-status parameter, it will call the to_json serializer on the generic object. 
+expects the path to a template, but it doesn't modify the headers.
+There's a `json` helper method expecting a Crystal generic Object.
+It will call the `to_json` serializer on the generic object. Please
+note that you need to require JSON from the standard library in
+order to use this helper (adding `require "json"` to your app should
+suffice).
 
 Status codes
 ------------
