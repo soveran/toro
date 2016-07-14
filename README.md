@@ -16,13 +16,13 @@ class App < Toro::Router
   # You must define the `routes` methods. It will be the
   # entry point to your web application.
   def routes
-  
+
     # The `get` matcher will execute the block when two conditions
     # are met: the `REQUEST_METHOD` is equal to "GET", and there are
     # no more path segments to match. In this case, as we haven't
     # consumed any path segment, the only way for this block to run
     # would be to have a "GET" request to "/". Check the API section
-    # to see all available matchers. 
+    # to see all available matchers.
     get do
 
       # The text macro sets the Content-Type to "text/plain", and
@@ -74,7 +74,7 @@ class App < Toro::Router
     # `Toro::Router`. This illustrates how you can compose your applications
     # and split the logic among different routers.
     default do
-      run Guests
+      mount Guests
     end
   end
 end
@@ -83,9 +83,9 @@ App.run
 ```
 
 The routes are evaluated in a sandbox where the following methods
-are available: `context`, `path`, `inbox`, `run`, `halt`, `basic_auth`,
-`root`, `root?`, `default`, `on`, `get`, `put`, `head`, `post`,
-`patch`, `delete`, `options`, `text`, `html` and `render`.
+are available: `context`, `path`, `inbox`, `mount`, `halt`,
+`basic_auth`, `root`, `root?`, `default`, `on`, `get`, `put`, `head`,
+`post`, `patch`, `delete`, `options`, `text`, `html` and `render`.
 
 ## API
 
@@ -96,7 +96,7 @@ are available: `context`, `path`, `inbox`, `run`, `halt`, `basic_auth`,
 `inbox`: Hash with captures and potentially other variables local
 to the request.
 
-`run`: Runs a sub app.
+`mount`: Mounts a sub app.
 
 `halt`: Terminates the request.
 
@@ -171,7 +171,9 @@ The most basic way of returning a string is by calling the method
 the passed string to the response. A similar helper is called `html`:
 it takes as an argument the path to an `ECR` template and renders
 its content. A lower level `render` method is available: it also
-expects the path to a template, but it doesn't modify the headers.
+expects the path to a template, but it doesn't modify the headers. There's
+a json helper method expecting a Crystal generic Object and has an optional
+status parameter, it will call the to_json serializer on the generic object. 
 
 Status codes
 ------------
@@ -182,9 +184,9 @@ with the `status` macro:
 ```crystal
   status
   #=> 404
-  
+
   status 200
-  
+
   status
   #=> 200
 ```
@@ -218,7 +220,7 @@ class A < Toro::Router
     user = basic_auth do |name, pass|
       User.authenticate(name, pass)
     end
-    
+
     users(user)
   end
 end

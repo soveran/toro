@@ -80,6 +80,15 @@ module Toro
       end
     end
 
+    def json(response : T, status_code : Int? = nil)
+      header "Content-Type", "application/json"
+      if status_code
+        status status_code
+      end
+
+      context.response.puts(response.to_json)
+    end
+
     macro default
       {{yield}}
       return
