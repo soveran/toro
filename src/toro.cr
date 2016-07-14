@@ -53,8 +53,10 @@ module Toro
     getter context : HTTP::Server::Context
 
     @inbox = Hash(Symbol, String).new
+    @halt = false
 
     def initialize(@context)
+      @halt = false
       @path = Seg.new(@context.request.path.as String)
     end
 
@@ -64,11 +66,12 @@ module Toro
     def call
       status 404
       routes
-    rescue Halt
+    # rescue Halt
     end
 
     def halt
-      raise Halt.new
+      @halt = true
+      # raise Halt.new
     end
 
     def auth_header
@@ -89,7 +92,9 @@ module Toro
     end
 
     def default
-      yield
+      if !@halt
+        yield
+      end
       halt
     end
 
@@ -170,7 +175,7 @@ module Toro
 
     macro redirect(url)
       status 302
-      header "Location", "/dashboard"
+      header "Location", url
     end
   end
 end
