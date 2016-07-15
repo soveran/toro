@@ -25,8 +25,8 @@ class App < Toro::Router
     # to see all available matchers.
     get do
 
-      # The text macro sets the Content-Type to "text/plain", and
-      # prints the text to the response.
+      # The text method sets the Content-Type to "text/plain", and
+      # prints the string to the response.
       text "hello world"
     end
 
@@ -53,7 +53,7 @@ class App < Toro::Router
           # Now, `inbox[:id]` has the value "42". The templates have access
           # to the inbox and to any other variables defined here.
           #
-          # The `html` macro expects the path to a template. It automatically
+          # The `html` macro expects a path to a template. It automatically
           # appends the `.ecr` extension, which stands for Embedded Crystal
           # and is part of the standard library. It also sets the content
           # type to "text/html".
@@ -64,9 +64,9 @@ class App < Toro::Router
 
     # The `default` matcher always succeeds, but it doesn't mean the program's
     # flow will always reach this point. Once a matcher succeeds and runs a
-    # block, the control is never returned. There's an implicit call to `halt`
-    # at the end of every block. A call to `halt` stops the processing of
-    # the request and returns the response immediately.
+    # block, the control is never returned. There's an implicit return at the
+    # end of every block, which stops the processing of the request and
+    # returns the response immediately.
     #
     # This route will match all the requests that don't have "users" as the
     # first segment (because of the previous matcher), and it will pass the
@@ -169,20 +169,20 @@ The most basic way of returning a string is by calling the method
 `text`. It sets the `Content-Type` header to `text/plain` and writes
 the passed string to the response. A similar helper is called `html`:
 it takes as an argument the path to an `ECR` template and renders
-its content. A lower level `render` method is available: it also
+its content. A lower level `render` macro is available: it also
 expects the path to a template, but it doesn't modify the headers.
 There's a `json` helper method expecting a Crystal generic Object.
 It will call the `to_json` serializer on the generic object. Please
 note that you need to require JSON from the standard library in
 order to use this helper (adding `require "json"` to your app should
-suffice). The lower level `write` macro writes a string to the
+suffice). The lower level `write` method writes a string to the
 response object. It is used internally by `text` and `json`.
 
 Status codes
 ------------
 
 The default status code is `404`. It can be changed and queried
-with the `status` macro:
+with the `status` method:
 
 ```crystal
   status
