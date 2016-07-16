@@ -113,9 +113,13 @@ module Toro
 
     {% end %}
 
-    macro mount(app)
-      {{app.id}}.call(context, path)
-      return
+    macro mount(*apps)
+      {% for app, index in apps %}
+        {{app.id}}.call(context, path)
+        {% if index >= (apps.size - 1) %}
+          return
+        {% end %}
+      {% end %}
     end
 
     macro default

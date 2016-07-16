@@ -138,6 +138,31 @@ describe "root matcher" do
   end
 end
 
+
+class E2 < Toro::Router
+  def routes
+    root do
+      text "not here"
+    end
+
+    on "foo2" do
+      root do
+        text "got foo2"
+      end
+    end
+  end
+end
+
+class E3 < Toro::Router
+  def routes
+    on "foo3" do
+      root do
+        text "got foo3"
+      end
+    end
+  end
+end
+
 class F < Toro::Router
   def routes
     root do
@@ -146,6 +171,10 @@ class F < Toro::Router
 
     on "bar" do
       mount E
+    end
+
+    on "bar2" do
+      mount E2, E3
     end
 
     default do
@@ -159,6 +188,18 @@ describe "mounted apps" do
 
   it "should process the request and the rest of the path" do
     assert_equal "got here\n", response.body
+  end
+  
+  response = Toro.drive(F, "GET", "/bar2/foo2")
+
+  it "should call E2 router" do
+    assert_equal "got foo2\n", response.body
+  end
+
+  response = Toro.drive(F, "GET", "/bar2/foo3")
+
+  it "should call E3 router" do
+    assert_equal "got foo3\n", response.body
   end
 end
 
