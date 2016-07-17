@@ -36,6 +36,46 @@ describe "boolean matchers" do
   end
 end
 
+class A2 < Toro::Router
+  def routes
+    a = 1
+    b = 2
+
+    on (a < b), (a > b) do
+      context.response.puts "shouldn't get here, multiple conds"
+    end
+
+    on "bar", true, :test do
+      context.response.puts "true #{inbox[:test]}"
+
+      on (a > b), (a < b) do
+        context.response.puts "shouldn't get here"
+      end
+
+      on (b > a), (a < b) do
+        context.response.puts "again true"
+      end
+    end
+
+    on true do
+      context.response.puts "shouldn't get here"
+    end
+  end
+end
+
+describe "multiple boolean matchers" do
+  response = Toro.drive(A2, "GET", "/bar/1")
+
+  it "should only progress when the multiple values are true" do
+    assert_equal "true 1\nagain true\n", response.body
+  end
+
+  it "should return 404 unless a verb is matched" do
+    assert_equal 404, response.status_code
+  end
+end
+
+
 class B < Toro::Router
   def routes
     on "bar" do
@@ -341,5 +381,46 @@ describe "json method helper" do
 
   it "should return json {\"hello\":\"world\"}" do
     assert_equal "{\"hello\":\"world\"}", response.body
+  end
+end
+
+
+
+class M < Toro::Router
+  def routes
+    a = 1
+    b = 2
+
+    on (a < b), (a > b) do
+      context.response.puts "shouldn't get here, multiple conds"
+    end
+
+    on "bar", :test, :test2 do
+      context.response.puts "true #{inbox[:test]} #{inbox[:test2]}"
+
+      on (a > b), (a < b) do
+        context.response.puts "shouldn't get here"
+      end
+
+      on "foo", (a < b) do
+        context.response.puts "again true"
+      end
+    end
+
+    on true do
+      context.response.puts "shouldn't get here"
+    end
+  end
+end
+
+describe "multiple matchers" do
+  response = Toro.drive(M, "GET", "/bar/1/2/foo")
+
+  it "should only progress when the multiple values are true" do
+    assert_equal "true 1 2\nagain true\n", response.body
+  end
+
+  it "should return 404 unless a verb is matched" do
+    assert_equal 404, response.status_code
   end
 end
