@@ -80,11 +80,6 @@ module Toro
       end
     end
 
-    macro default
-      {{yield}}
-      return
-    end
-
     def on?(cond : Bool)
       cond
     end
