@@ -102,11 +102,35 @@ module Toro
         context.request.method == {{method.upcase}}
       end
 
-      def {{method.id}}
-        root { status 200; yield } if {{method.id}}?
-      end
-
     {% end %}
+
+    macro get
+      root { status 200; {{yield}} } if get?
+    end
+
+    macro put
+      root { status 200; {{yield}} } if put?
+    end
+
+    macro head
+      root { status 200; {{yield}} } if head?
+    end
+
+    macro post
+      root { status 200; {{yield}} } if post?
+    end
+
+    macro patch
+      root { status 200; {{yield}} } if patch?
+    end
+
+    macro delete
+      root { status 200; {{yield}} } if delete?
+    end
+
+    macro options
+      root { status 200; {{yield}} } if options?
+    end
 
     macro mount(app)
       {{app.id}}.call(context, path)

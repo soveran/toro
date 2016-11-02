@@ -165,7 +165,7 @@ end
 class G < Toro::Router
   def routes
     get do
-      text "not here"
+      text "here at root"
     end
 
     post do
@@ -189,6 +189,16 @@ class G < Toro::Router
 end
 
 describe "verb matchers" do
+  response = Toro.drive(G, "GET", "/")
+
+  it "should work at root" do
+    assert_equal "here at root\n", response.body
+  end
+
+  it "should return 200" do
+    assert_equal 200, response.status_code
+  end
+
   response = Toro.drive(G, "POST", "/foo")
 
   it "should progress when the verb matches" do
