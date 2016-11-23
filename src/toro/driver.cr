@@ -14,7 +14,7 @@ module Toro
     end
 
     def call(req : HTTP::Request)
-      io  = MemoryIO.new
+      io  = IO::Memory.new
       res = HTTP::Server::Response.new(io)
 
       @router.call(HTTP::Server::Context.new(req, res))
