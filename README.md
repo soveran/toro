@@ -178,6 +178,33 @@ order to use this helper (adding `require "json"` to your app should
 suffice). The lower level `write` method writes a string to the
 response object. It is used internally by `text` and `json`.
 
+Running the server
+------------------
+
+If `App` is an instance of `Toro`, then you can start the server
+by calling `App.run`. You can pass any options you would use with
+the `HTTP::Server` constructor from the standard library.
+
+For example, you can start the server on port 80:
+
+```crystal
+App.run(80)
+```
+
+Or you can further configure server by using a block. The following
+example shows how to configure SSL certificates:
+
+```crystal
+App.run(443) do |server|
+  ssl = OpenSSL::SSL::Context::Server.new
+  ssl.private_key = "path/to/private_key"
+  ssl.certificate_chain = "path/to/certificate_chain"
+  server.tls = ssl
+end
+```
+
+Refer to Crystal's documentation for more options.
+
 Status codes
 ------------
 

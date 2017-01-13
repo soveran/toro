@@ -31,8 +31,12 @@ module Toro
       new(context, path).call
     end
 
-    def self.run(port = 8080)
-      server = HTTP::Server.new(port) do |context|
+    def self.run(*args)
+      run(*args) {}
+    end
+
+    def self.run(*args, &block)
+      server = HTTP::Server.new(*args) do |context|
         call(context)
       end
 
@@ -41,7 +45,9 @@ module Toro
         exit
       end
 
-      puts "#{name} - Listening on port #{port}"
+      yield server
+
+      puts "#{name} - Listening on port #{server.port}"
       server.listen
     end
 
