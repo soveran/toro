@@ -79,7 +79,8 @@ class App < Toro::Router
   end
 end
 
-App.run
+# Start the app on port 8080.
+App.run(8080)
 ```
 
 The routes are evaluated in a sandbox where the following methods
