@@ -1,3 +1,7 @@
+0.4.0
+
+* Add ability to configure the server with a block
+
 0.3.3
 
 * Fix behavior of verb matchers at root level
