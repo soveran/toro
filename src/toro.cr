@@ -146,6 +146,14 @@ module Toro
       default { {{yield}} } if on?({{matcher}})
     end
 
+    macro on(*matcher)
+      matched = true
+      {% for match, index in matcher %}
+        matched = on?({{match}}) if matched
+      {% end %}
+      default { {{yield}} } if matched
+    end
+
     macro root
       default { {{yield}} } if root?
     end
