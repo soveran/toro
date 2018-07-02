@@ -35,7 +35,7 @@ module Toro
       run(*args) {}
     end
 
-    def self.run(*args, &block)
+    def self.run(port, *args, &block)
       server = HTTP::Server.new(*args) do |context|
         call(context)
       end
@@ -47,8 +47,8 @@ module Toro
 
       yield server
 
-      puts "#{name} - Listening on port #{server.port}"
-      server.listen
+      puts "#{name} - Listening on port #{port}"
+      server.listen(port)
     end
 
     getter path : Seg
