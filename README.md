@@ -2,6 +2,8 @@
 
 ![Toro](http://files.soveran.com/toro/img/toro.png)
 
+![CI](https://github.com/soveran/toro/workflows/Crystal%20CI/badge.svg)
+
 Tree Oriented Routing
 
 ## Usage
