@@ -8,7 +8,29 @@ Tree Oriented Routing
 
 ## Usage
 
-There's an example that showcases basic routing features:
+Here's a `hello world` app that you can copy and paste to get a
+sense of how Toro works:
+
+```crystal
+require "toro"
+
+class App < Toro::Router
+  def routes
+    get do
+      text "hello world"
+    end
+  end
+end
+
+App.run(8080)
+```
+
+Save it to a file called `hello_world.cr` and run it with
+`crystal run hello_world.cr`. Then access your `hello world` application with
+your browser, or simply by calling `curl http://localhost:8080/` from the
+command line.
+
+What follows is an example that showcases some basic routing features:
 
 ```crystal
 require "toro"
@@ -58,8 +80,22 @@ class App < Toro::Router
           # The `html` macro expects a path to a template. It automatically
           # appends the `.ecr` extension, which stands for Embedded Crystal
           # and is part of the standard library. It also sets the content
-          # type to "text/html".
-          html "views/users/show"
+          # type to "text/html". For the html example to work, you need to
+          # create the file ./views/users/show.ecr with the following content:
+          #
+          #   hello user <%= inbox[:id] %>
+          #
+          #
+          # Once you have created the file, uncomment the line below.
+          #
+          # html "views/users/show"
+
+
+          # As a placeholder, the following directive renders the same message
+          # as plain text. Once you have the HTML template in place, you can
+          # comment or remove both this comment and the `text` directive.
+          #
+          text "hello user #{inbox[:id]}"
         end
       end
     end
@@ -81,8 +117,28 @@ class App < Toro::Router
   end
 end
 
+# This is another Toro application. You can mount apps on top of other Toro
+# in order to achieve a modular design.
+class Guests < Toro::Router
+  def routes
+    on "about" do
+      get do
+        text "about this site"
+      end
+    end
+  end
+end
+
 # Start the app on port 8080.
 App.run(8080)
+```
+
+Once you have this application running, try the requests below:
+
+```shell
+$ curl http://localhost:8080/
+$ curl http://localhost:8080/about
+$ curl http://localhost:8080/users/42
 ```
 
 The routes are evaluated in a sandbox where the following methods
