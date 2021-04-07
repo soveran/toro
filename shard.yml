@@ -15,5 +15,6 @@ development_dependencies:
   crotest:
     github: emancu/crotest
     branch: master
+    version: ~> 1.0.0
 
 crystal: "0.36.1, ~> 1.0.0"
