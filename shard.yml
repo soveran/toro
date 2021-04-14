@@ -1,5 +1,6 @@
 name: toro
 version: 0.4.1
+crystal: ">= 0.36.0 - 1.0"
 
 authors:
   - Michel Martens <mail@soveran.com>
@@ -15,5 +16,3 @@ development_dependencies:
   crotest:
     github: emancu/crotest
     version: ~> 1.0.1
-
-crystal: "0.36.1, ~> 1.0.0"
