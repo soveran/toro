@@ -1,5 +1,5 @@
 name: toro
-version: 0.4.1
+version: 0.4.2
 crystal: ">= 0.36.0 - 1.0"
 
 authors:

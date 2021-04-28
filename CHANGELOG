@@ -1,3 +1,7 @@
+0.4.2
+
+* Declare compatibility with Crystal 1.0
+
 0.4.1
 
 * Adapt internals to Crystal 0.25
