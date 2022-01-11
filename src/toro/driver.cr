@@ -17,7 +17,7 @@ module Toro
       io  = IO::Memory.new
       res = HTTP::Server::Response.new(io)
 
-      @router.call(HTTP::Server::Context.new(req, res))
+      @router.new(HTTP::Server::Context.new(req, res)).call
 
       res.close
 

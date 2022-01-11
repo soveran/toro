@@ -124,6 +124,12 @@ class E < Toro::Router
       end
     end
 
+    on "baz" do
+      root do
+        text "got #{inbox[:name]}"
+      end
+    end
+
     default do
       text "not here"
     end
@@ -144,6 +150,8 @@ class F < Toro::Router
       write "root"
     end
 
+    inbox[:name] = "someone"
+
     on "bar" do
       mount E
     end
@@ -159,6 +167,12 @@ describe "mounted apps" do
 
   it "should process the request and the rest of the path" do
     assert_equal "got here\n", response.body
+  end
+
+  response = Toro.drive(F, "GET", "/bar/baz")
+
+  it "should preserve the inbox" do
+    assert_equal "got someone\n", response.body
   end
 end
 

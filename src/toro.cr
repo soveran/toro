@@ -23,21 +23,13 @@ require "http/server"
 
 module Toro
   abstract class Router
-    def self.call(context : HTTP::Server::Context)
-      new(context).call
-    end
-
-    def self.call(context : HTTP::Server::Context, path : Seg)
-      new(context, path).call
-    end
-
     def self.run(*args)
       run(*args) {}
     end
 
     def self.run(port, *args, &block)
       server = HTTP::Server.new(*args) do |context|
-        call(context)
+        new(context).call
       end
 
       Signal::INT.trap do
@@ -55,13 +47,12 @@ module Toro
     getter inbox : Hash(Symbol, String)
     getter context : HTTP::Server::Context
 
-    @inbox = Hash(Symbol, String).new
-
     def initialize(@context)
       @path = Seg.new(@context.request.path.as String)
+      @inbox = Hash(Symbol, String).new
     end
 
-    def initialize(@context, @path)
+    def initialize(@context, @path, @inbox)
     end
 
     def call
@@ -139,7 +130,7 @@ module Toro
     end
 
     macro mount(app)
-      {{app.id}}.call(context, path)
+      {{app.id}}.new(context, path, inbox).call
       return
     end
 
