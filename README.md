@@ -22,7 +22,9 @@ class App < Toro::Router
   end
 end
 
-App.run(8080)
+App.run do |server|
+  server.listen "0.0.0.0", 8080
+end
 ```
 
 Save it to a file called `hello_world.cr` and run it with
@@ -130,7 +132,9 @@ class Guests < Toro::Router
 end
 
 # Start the app on port 8080.
-App.run(8080)
+App.run do |server|
+  server.listen "0.0.0.0", 8080
+end
 ```
 
 Once you have this application running, try the requests below:
@@ -240,25 +244,27 @@ response object. It is used internally by `text` and `json`.
 Running the server
 ------------------
 
-If `App` is an instance of `Toro`, then you can start the server
-by calling `App.run`. You can pass any options you would use with
-the `HTTP::Server` constructor from the standard library.
+If `App` is an instance of `Toro`, then you can start the server by
+calling `App.run`. It yields an instance of `HTTP://Server` that you
+can configure:
 
 For example, you can start the server on port 80:
 
 ```crystal
-App.run(80)
+App.run do |server|
+  server.listen "0.0.0.0", 80
+end
 ```
 
-Or you can further configure server by using a block. The following
-example shows how to configure SSL certificates:
+The following example shows how to configure SSL certificates:
 
 ```crystal
-App.run(443) do |server|
+App.run do |server|
   ssl = OpenSSL::SSL::Context::Server.new
   ssl.private_key = "path/to/private_key"
   ssl.certificate_chain = "path/to/certificate_chain"
   server.tls = ssl
+  server.listen "0.0.0.0", 443
 end
 ```
 
