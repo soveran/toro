@@ -239,7 +239,7 @@ describe "html renderer" do
     response = Toro.drive(H, "GET", "/")
 
     assert_equal 200, response.status_code
-    assert_equal "hello foo!", response.body
+    assert_equal "hello foo!\n", response.body
   end
 
   it "should not render if not found" do
