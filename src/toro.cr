@@ -32,7 +32,7 @@ module Toro
         new(context).call
       end
 
-      Signal::INT.trap do
+      Process.on_interrupt do
         server.close
         exit
       end
